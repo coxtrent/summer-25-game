@@ -18,6 +18,7 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 5f;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
+
     private void FixedUpdate()
     {
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
@@ -62,7 +63,7 @@ public class PlayerController : MonoBehaviour
             Destroy(GameObject.FindGameObjectWithTag("Enemy"));
         }
     }
-
+    
     void OnJump()
     {
         if (IsGrounded())
@@ -77,6 +78,8 @@ public class PlayerController : MonoBehaviour
         Vector3 checkPosition = rb.position + Vector3.down * (sphereRadius + 0.05f);
         return Physics.CheckSphere(checkPosition, groundCheckRadius, groundLayer);
     }
+
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
@@ -87,7 +90,7 @@ public class PlayerController : MonoBehaviour
             winTextObject.gameObject.SetActive(true);
             winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
             retryTextObject.SetActive(true);
-    }
+        }
     }
 }
 
