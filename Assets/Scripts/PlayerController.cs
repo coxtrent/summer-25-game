@@ -14,10 +14,11 @@ public class PlayerController : MonoBehaviour
     private float movementY;
     public TextMeshProUGUI countText;
     public GameObject winTextObject;
-    public GameObject retryTextObject;
+    public GameObject gameOverMenu;
     public float jumpForce = 5f;
     public float groundCheckRadius = 0.2f;
     public LayerMask groundLayer;
+    private AudioSource audioSource;
 
     private void FixedUpdate()
     {
@@ -39,9 +40,10 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         winTextObject.SetActive(false);
-        retryTextObject.SetActive(false);
+        gameOverMenu.SetActive(false);
         count = 0;
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
         SetCountText();
     }
 
@@ -59,7 +61,7 @@ public class PlayerController : MonoBehaviour
         if (count >= 13)
         {
             winTextObject.SetActive(true);
-            retryTextObject.SetActive(true);
+            gameOverMenu.SetActive(true);
             Destroy(GameObject.FindGameObjectWithTag("Enemy"));
         }
     }
@@ -69,6 +71,7 @@ public class PlayerController : MonoBehaviour
         if (IsGrounded())
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            audioSource.PlayOneShot(audioSource.clip);
         }
     }
 
@@ -89,7 +92,7 @@ public class PlayerController : MonoBehaviour
             // Update the winText to display "You Lose!"
             winTextObject.gameObject.SetActive(true);
             winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
-            retryTextObject.SetActive(true);
+            gameOverMenu.SetActive(true);
         }
     }
 }
